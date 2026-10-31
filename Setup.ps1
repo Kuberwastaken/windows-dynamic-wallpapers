@@ -34,13 +34,14 @@ if (!(Test-Path "$root\settings-backup.json")) {
 }
 Copy-Item "$staging\*" $root -Force
 Copy-Item "$PSScriptRoot\Update-Wallpaper.ps1" "$root\Update.ps1" -Force
+Copy-Item "$PSScriptRoot\Run-Hidden.vbs" "$root\Run-Hidden.vbs" -Force
 Remove-Item "$root\success.txt" -ErrorAction SilentlyContinue
 $contentKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'
 New-Item $contentKey -Force | Out-Null
 Set-ItemProperty $contentKey RotatingLockScreenEnabled 0
 Set-ItemProperty $contentKey RotatingLockScreenOverlayEnabled 0
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-$action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument "-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$root\Update.ps1`""
+$action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\wscript.exe" -Argument "//B //NoLogo `"$root\Run-Hidden.vbs`""
 $triggers = @(New-ScheduledTaskTrigger -AtLogOn -User $user)
 foreach ($entry in (Get-Content "$root\schedule.json" | ConvertFrom-Json)) {
     $triggers += New-ScheduledTaskTrigger -Daily -At ([datetime]::Today.AddSeconds([math]::Round($entry.t * 86400)))

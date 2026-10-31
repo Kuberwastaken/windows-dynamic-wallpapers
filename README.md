@@ -2,11 +2,13 @@
 
 Use a **dynamic HEIC / HEIF wallpaper on Windows**, with time-based updates for both the desktop background and lock screen. Extract a macOS-style HEIC wallpaper once, then let Windows Task Scheduler select the right still image throughout the day.
 
-No resident wallpaper app, video rendering, location service, or subscription. A short PowerShell process runs at scheduled times, login, wake, and every five minutes as a recovery check. This is designed for low overhead; resource use has not been benchmarked across devices.
+No resident wallpaper app, video rendering, location service, or subscription. A short PowerShell process runs at scheduled times, login, wake, and every five minutes as a recovery check. A Windows Script Host launcher starts it hidden from creation, avoiding the console flash that direct scheduled PowerShell launches can produce. This is designed for low overhead; resource use has not been benchmarked across devices.
 
 ## Setup
 
 Requires Windows 11 (the target platform), Windows PowerShell 5.1, and **Python 3.10+** available as `python`. Windows 10 may work but is untested. Setup needs internet access for Python dependencies; normal wallpaper updates work offline. No administrator privileges are normally required; managed PCs may restrict Task Scheduler or lock-screen changes.
+
+The silent launcher also requires Windows Script Host with VBScript enabled. If your system disables that component, the task cannot run through this launcher. Existing installations can rerun setup to install the console-flash fix.
 
 1. Download or clone this repository.
 2. Stop any other wallpaper changer and disable its startup entry. Choose **Picture** instead of Windows Spotlight or Slideshow in **Settings > Personalization > Lock screen**. Setup also disables the per-user rotating lock-screen settings, but Windows versions and policies can affect them.
