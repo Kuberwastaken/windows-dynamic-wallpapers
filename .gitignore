@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.heic
+*.heif
+*.jpg
+*.jpeg
+*.png
+test-output/
