@@ -61,8 +61,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Setup.ps1 -HeicPath "C
 - Extracts the HEIC / HEIF image sequence and validates its time metadata before installation.
 - Stores JPEG frames, a schedule, logs, and the updater under `%LOCALAPPDATA%\WindowsDynamicWallpapers`.
 - Registers the current-user **Windows Dynamic Wallpapers** scheduled task. It runs only in your interactive user session, including on battery, and does not wake the laptop to change a picture.
-- Updates a stable `Current.jpg` file shared by virtual desktops, uses Windows desktop wallpaper APIs, and sets the lock-screen image through WinRT.
-- Checks every five minutes as a fallback for missed events or another setting overriding the desktop. When the selected image is already applied, it exits early.
+- Updates a stable `Current.jpg` file shared by virtual desktops and uses Windows desktop wallpaper APIs. The lock screen receives each frame's distinct JPEG filename through WinRT, so Windows does not reuse a stale cached copy of `Current.jpg`.
+- Checks every five minutes as a fallback for missed events or another setting overriding the desktop or lock screen. It exits early only when the desktop state and lock-screen source both match the scheduled frame.
 
 The virtual-desktop registry workaround is Windows-version dependent. Explorer may need one restart to discard old per-desktop caches. This is a small community script, not a guarantee against Windows updates, personalization changes, third-party wallpaper apps, or organization policy.
 
